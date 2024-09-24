@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mira - Version 2</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .results-page {
+            display: none;
+        }
+
+        .share-message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="questionContainer">
+        <h1>Hey Mira 👋</h1>
+        <p>Let’s explore some fun questions...</p>
+
+        <div id="question1">
+            <p>What’s a place you'd love to visit together?</p>
+            <input type="text" id="placeToVisit" placeholder="Your dream place..." required>
+            <button onclick="nextQuestion('question1', 'question2')">Next</button>
+        </div>
+
+        <div id="question2" class="hidden">
+            <p>What quality do you admire most in someone?</p>
+            <input type="text" id="admiredQuality" placeholder="Something you value in others..." required>
+            <button onclick="nextQuestion('question2', 'question3')">Next</button>
+        </div>
+
+        <div id="question3" class="hidden">
+            <p>What's a small gesture that means a lot to you?</p>
+            <input type="text" id="smallGesture" placeholder="A little thing that matters..." required>
+            <button onclick="nextQuestion('question3', 'question4')">Next</button>
+        </div>
+
+        <div id="question4" class="hidden">
+            <p>Would you want to explore something deeper between us? 😊</p>
+            <select id="exploreDeeper">
+                <option value="">Select an option</option>
+                <option value="Yes, let’s see where it goes!">Yes, let’s see where it goes!</option>
+                <option value="Maybe, let’s take it slow.">Maybe, let’s take it slow.</option>
+                <option value="I’d rather stay friends for now.">I’d rather stay friends for now.</option>
+            </select>
+            <button onclick="submitForm()">Submit</button>
+        </div>
+    </div>
+
+    <div class="container results-page" id="resultsPage">
+        <h1>Thank You, Mira!</h1>
+        <p>Your answers:</p>
+        <p id="resultPlaceToVisit"></p>
+        <p id="resultAdmiredQuality"></p>
+        <p id="resultSmallGesture"></p>
+        <p id="resultExploreDeeper"></p>
+
+        <div class="share-message">
+            <p>Would you like to share your answers with me on WhatsApp? 😊</p>
+            <button onclick="shareOnWhatsApp()">Share via WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        function nextQuestion(current, next) {
+            document.getElementById(current).classList.add('hidden');
+            document.getElementById(next).classList.remove('hidden');
+        }
+
+        function submitForm() {
+            // Collect the answers
+            var placeToVisit = document.getElementById("placeToVisit").value;
+            var admiredQuality = document.getElementById("admiredQuality").value;
+            var smallGesture = document.getElementById("smallGesture").value;
+            var exploreDeeper = document.getElementById("exploreDeeper").value;
+
+            // Display the results on the next page
+            document.getElementById("resultPlaceToVisit").innerText = "Place to Visit: " + placeToVisit;
+            document.getElementById("resultAdmiredQuality").innerText = "Admired Quality: " + admiredQuality;
+            document.getElementById("resultSmallGesture").innerText = "Small Gesture: " + smallGesture;
+            document.getElementById("resultExploreDeeper").innerText = "Explore Deeper Decision: " + exploreDeeper;
+
+            // Show the results page
+            document.getElementById("questionContainer").classList.add('hidden');
+            document.getElementById("resultsPage").style.display = 'block';
+        }
+
+        function shareOnWhatsApp() {
+            // Collect the results text
+            var placeToVisit = document.getElementById("resultPlaceToVisit").innerText;
+            var admiredQuality = document.getElementById("resultAdmiredQuality").innerText;
+            var smallGesture = document.getElementById("resultSmallGesture").innerText;
+            var exploreDeeper = document.getElementById("resultExploreDeeper").innerText;
+
+            // WhatsApp URL
+            var whatsappURL = "https://api.whatsapp.com/send?phone=+27728218726&text=" 
+                + encodeURIComponent("Here are my answers: \n" + placeToVisit + "\n" + admiredQuality + "\n" + smallGesture + "\n" + exploreDeeper);
+
+            // Redirect to WhatsApp
+            window.open(whatsappURL, '_blank');
+        }
+    </script>
+
+</body>
+</html>
